@@ -3,7 +3,7 @@ from config_data.config import settings
 
 
 cookie_transport = CookieTransport(
-    cookie_name="Task Traker",
+    cookie_name="CinnamonPie",
     cookie_max_age=3600,
 )
 

@@ -3,8 +3,8 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
 from config_data.config import settings
-from database.models import User
-from database.models import Base
+from database.models import user, task
+from database.database import Base
 
 
 # this is the Alembic Config object, which provides
