@@ -14,6 +14,8 @@ class Settings(BaseSettings):
     db_user: str
     db_pass: str
     db_name: str
+    jwt_secret: str
+    manager_secret: str
 
     @property
     def DATABASE_URL_asyncpg(self):
