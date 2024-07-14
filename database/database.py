@@ -2,35 +2,31 @@ from typing import AsyncGenerator
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyBaseUserTable, SQLAlchemyUserDatabase
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import text, String, DateTime, Boolean
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import DeclarativeMeta
+from sqlalchemy import String, Boolean, Column, Integer, TIMESTAMP
 from datetime import datetime
 from config_data.config import settings
 
 
 DATABASE_URL = settings.DATABASE_URL_asyncpg
-
-
-class Base(DeclarativeBase):
-    pass
+Base: DeclarativeMeta = declarative_base()
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    name: Mapped[str] = mapped_column(String, nullable=False)
-    email: Mapped[str] = mapped_column(String, nullable=False)
-    username: Mapped[str] = mapped_column(String, nullable=False)
-    registered_at: Mapped[datetime] = mapped_column(DateTime, nullable=False,
-                                                    server_default=text("TIMEZONE('utc', now())"))
-    hashed_password: Mapped[str] = mapped_column(String(length=1024), nullable=False)
-    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    is_superuser: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
-    is_verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    email = Column(String, nullable=False)
+    username = Column(String, nullable=False)
+    registered_at = Column(TIMESTAMP, default=datetime.utcnow)
+    hashed_password: str = Column(String(length=1024), nullable=False)
+    is_active: bool = Column(Boolean, default=True, nullable=False)
+    is_superuser: bool = Column(Boolean, default=False, nullable=False)
+    is_verified: bool = Column(Boolean, default=False, nullable=False)
 
 
 engine = create_async_engine(DATABASE_URL)
-async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
+async_session_maker = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:

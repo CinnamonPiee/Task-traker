@@ -25,6 +25,6 @@ task = Table(
     metadata,
     Column("id", Integer, primary_key=True),
     Column("name", String, nullable=False),
-    Column("user_id", Integer, ForeignKey("user.id")),
-    Column("created_at", TIMESTAMP, nullable=False),
+    Column("user_id", Integer, ForeignKey(user.c.id)),
+    Column("created_at", TIMESTAMP, default=datetime.utcnow),
 )

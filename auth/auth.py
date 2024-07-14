@@ -2,10 +2,7 @@ from fastapi_users.authentication import AuthenticationBackend, CookieTransport,
 from config_data.config import settings
 
 
-cookie_transport = CookieTransport(
-    cookie_name="CinnamonPie",
-    cookie_max_age=3600,
-)
+cookie_transport = CookieTransport(cookie_name="bonds", cookie_max_age=3600)
 
 SECRET = settings.jwt_secret
 
