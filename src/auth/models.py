@@ -3,6 +3,7 @@ from sqlalchemy import ForeignKey, String, Table, Integer, Boolean, MetaData, Co
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from database import Base
 
+
 metadata = MetaData()
 
 
